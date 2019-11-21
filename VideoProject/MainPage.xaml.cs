@@ -58,7 +58,7 @@
 
             if (video != null && haveVideos)
             {
-                this.Frame.Navigate(typeof(VideoViewer), new VideoDetailParams() { Videos = this.ViewModel.Videos.Result, SelectedVideo = video });
+                this.Frame.Navigate(typeof(VideoDetailsGallery), new VideoDetailParams() { Videos = this.ViewModel.Videos.Result, SelectedVideo = video });
             }
         }
     }

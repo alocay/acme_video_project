@@ -131,6 +131,9 @@
     <Compile Include="VideoDetails.xaml.cs">
       <DependentUpon>VideoDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VideoDetailsGallery.xaml.cs">
+      <DependentUpon>VideoDetailsGallery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VideoDetailsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +163,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="VideoDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="VideoDetailsGallery.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

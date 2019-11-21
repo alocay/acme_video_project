@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace VideoProject
 {
@@ -36,5 +37,17 @@ namespace VideoProject
         /// </summary>
         [JsonProperty("runningTime")]
         public float RunningTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the art url
+        /// </summary>
+        [JsonProperty("artUrl")]
+        public string ArtUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets related movie IDs
+        /// </summary>
+        [JsonProperty("related")]
+        public List<string> RelatedVideoIds { get; set; }
     }
 }

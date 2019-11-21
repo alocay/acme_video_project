@@ -16,44 +16,30 @@ using Windows.UI.Xaml.Navigation;
 namespace VideoProject
 {
     /// <summary>
-    /// The video viewer page
+    /// Video details user control
     /// </summary>
-    public sealed partial class VideoViewer : Page
+    public sealed partial class VideoDetails : UserControl
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="VideoViewer"/> class.
+        /// The title property dependency property
         /// </summary>
-        public VideoViewer()
+        private readonly DependencyProperty titleProperty = DependencyProperty.Register("Title", typeof(string), typeof(VideoDetails), new PropertyMetadata(string.Empty));
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VideoDetails"/> class.
+        /// </summary>
+        public VideoDetails()
         {
             this.InitializeComponent();
         }
 
         /// <summary>
-        /// Gets or sets the video details view model
+        /// Gets or sets the title property
         /// </summary>
-        public VideoDetailsViewModel ViewModel { get; set; }
-
-        /// <summary>
-        /// The navigated to handler. Sets up the view model for the video details page.
-        /// </summary>
-        /// <param name="e">The event args</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        public string Title
         {
-            base.OnNavigatedTo(e);
-
-            VideoDetailParams videoDetailParams = e.Parameter as VideoDetailParams;
-            if (videoDetailParams == null)
-            {
-                // Throw here so we are aware since this should not happen ever
-                throw new Exception("Unexpected parameters provided to video details page");
-            }
-
-            this.ViewModel = new VideoDetailsViewModel(videoDetailParams.SelectedVideo, videoDetailParams.Videos);
-        }
-
-        private void ReturnToList_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(MainPage), this.ViewModel.Videos);
+            get { return this.GetValue(this.titleProperty).ToString(); }
+            set { this.SetValue(this.titleProperty, value);  }
         }
     }
 }
