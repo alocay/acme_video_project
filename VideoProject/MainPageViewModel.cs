@@ -12,20 +12,26 @@ namespace VideoProject
     /// <summary>
     /// Main page view model
     /// </summary>
-    public class MainPageViewModel : INotifyPropertyChanged
+    public class MainPageViewModel
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MainPageViewModel"/> class.
         /// </summary>
-        public MainPageViewModel()
+        /// <param name="videos">(Optional) A list of preloaded videos</param>
+        public MainPageViewModel(List<Video> videos)
         {
-            this.Videos = new TaskNotifier<List<Video>>(this.GetVideos());
+            if (videos != null)
+            {
+                // We have preloaded videos already, just create a simple task and return these
+                var immediateTask = Task.Factory.StartNew(() => { return videos; });
+                this.Videos = new TaskNotifier<List<Video>>(immediateTask);
+            }
+            else
+            {
+                // No preloaded videos so lets go and get them
+                this.Videos = new TaskNotifier<List<Video>>(this.GetVideos());
+            }
         }
-
-        /// <summary>
-        /// Property changed event handler
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Gets the videos
@@ -56,16 +62,6 @@ namespace VideoProject
             httpResponse = await httpClient.GetAsync(requestUri);
             httpResponse.EnsureSuccessStatusCode();
             return httpResponse.Content.ReadAsStringAsync().GetResults();
-        }
-
-        /// <summary>
-        /// The on property changed handler
-        /// </summary>
-        /// <param name="propertyName">The name of the property being changed</param>
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            // Raise the PropertyChanged event, passing the name of the property whose value has changed.
-            this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

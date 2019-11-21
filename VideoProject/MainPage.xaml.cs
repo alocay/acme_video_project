@@ -26,12 +26,40 @@
         public MainPage()
         {
             this.InitializeComponent();
-            this.ViewModel = new MainPageViewModel();
         }
 
         /// <summary>
         /// Gets or sets the main page's view model
         /// </summary>
         public MainPageViewModel ViewModel { get; set; }
+
+        /// <summary>
+        /// The navigated to handler. Sets up the view model for the main page.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            List<Video> videos = e.Parameter as List<Video>;
+            this.ViewModel = new MainPageViewModel(videos);
+        }
+
+        /// <summary>
+        /// Video list click handler.
+        /// Navigates to the video details page.
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The event args</param>
+        private void VideoList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var video = e.ClickedItem as Video;
+            var haveVideos = this.ViewModel.Videos.IsCompleted && this.ViewModel.Videos.Result != null;
+
+            if (video != null && haveVideos)
+            {
+                this.Frame.Navigate(typeof(VideoViewer), new VideoDetailParams() { Videos = this.ViewModel.Videos.Result, SelectedVideo = video });
+            }
+        }
     }
 }

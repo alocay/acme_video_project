@@ -9,7 +9,7 @@ namespace VideoProject
     /// Provides helper function to access to the underlying task's status and exceptions.
     /// </summary>
     /// <typeparam name="TResult">The task return type</typeparam>
-    public class TaskNotifier<TResult> : INotifyPropertyChanged
+    public class TaskNotifier<TResult> : BindableClass
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskNotifier{TResult}"/> class.
@@ -23,11 +23,6 @@ namespace VideoProject
                 var x = this.WatchTaskAsync(task);
             }
         }
-
-        /// <summary>
-        /// The property changede event handler
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Gets and sets the task
@@ -101,21 +96,21 @@ namespace VideoProject
                 // Exception caught - a faulted and exception property changed event will be notified
             }
 
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Status"));
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsCompleted"));
+            this.NotifyChanged("Status");
+            this.NotifyChanged("IsCompleted");
 
             if (task.IsCanceled)
             {
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsCanceled"));
+                this.NotifyChanged("IsCanceled");
             }
             else if (task.IsFaulted)
             {
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("IsFaulted"));
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Exception"));
+                this.NotifyChanged("IsFaulted");
+                this.NotifyChanged("Exception");
             }
             else
             {
-                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Result"));
+                this.NotifyChanged("Result");
             }
         }
     }
