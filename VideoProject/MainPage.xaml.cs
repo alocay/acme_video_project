@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -45,11 +46,19 @@ namespace VideoProject
         {
             // Get the clicked video and video list and pass it to the gallery page
             var video = e.ClickedItem as Video;
-            var haveVideos = this.ViewModel.Videos.IsCompleted && this.ViewModel.Videos.Result != null;
+            var viewModel = this.DataContext as MainPageViewModel;
 
+            if (viewModel == null)
+            {
+                // The data context should always be of type MainPageViewModel so if it isn't, lets blow up
+                throw new Exception("MainPage DataContext not of type MainPageViewModel");
+            }
+
+            // Check that we have any video data, just to be safe
+            var haveVideos = viewModel.Videos.IsCompleted && viewModel.Videos.Result != null;
             if (video != null && haveVideos)
             {
-                this.Frame.Navigate(typeof(VideoDetailsGallery), new VideoDetailParams() { Videos = this.ViewModel.Videos.Result, SelectedVideo = video });
+                this.Frame.Navigate(typeof(VideoDetailsGallery), new VideoDetailParams() { Videos = viewModel.Videos.Result, SelectedVideo = video });
             }
         }
     }
