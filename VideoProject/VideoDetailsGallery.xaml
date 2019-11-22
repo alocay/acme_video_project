@@ -8,20 +8,15 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <UserControl.Resources>
+        <local:RunningTimeDisplayConverter x:Key="RunningTimeDisplayConverter" />
+    </UserControl.Resources>
+    
+    <StackPanel Orientation="Vertical">
         <Button x:Name="returnToList"
-                Grid.Column="0"
-                Grid.Row="0"
                 Content="Return to list" 
-                Click="ReturnToList_Click"/>
+                Click="ReturnToList_Click"
+                Margin="0,0,0,0"/>
         <FlipView x:Name="videoDetails"
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
@@ -29,12 +24,94 @@
                   ItemsSource="{x:Bind ViewModel.Videos}"
                   SelectedItem="{x:Bind ViewModel.CurrentVideo, Mode=TwoWay}"
                   HorizontalAlignment="Center"
-                  VerticalAlignment="Center">
+                  VerticalAlignment="Center"
+                  Margin="0,100,0,0"
+                  Background="Black">
+            <!-- TODO: Move flipview template into user control -->
             <FlipView.ItemTemplate>
                 <DataTemplate x:DataType="local:Video">
-                    <local:VideoDetails Title="{x:Bind Title}"/>
+                    <Grid MaxWidth="550">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200px" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="350px" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <!-- Main video details -->
+                        <Image Grid.Column="0"
+                               Grid.Row="0"
+                               Grid.RowSpan="2"
+                               Source="{x:Bind ArtUrl}"
+                               VerticalAlignment="Top"/>
+                        <TextBlock Grid.Row="0" 
+                                   Grid.Column="1"
+                                   Text="{x:Bind Title}" 
+                                   HorizontalAlignment="Left"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   TextWrapping="WrapWholeWords"
+                                   Margin="10,0,0,0"/>
+                        <TextBlock Grid.Row="0" 
+                                   Grid.Column="2"
+                                   Text="{x:Bind RunningTime, Converter={StaticResource RunningTimeDisplayConverter}}" 
+                                   HorizontalAlignment="Left"/>
+                        <ScrollViewer Grid.Row="1" 
+                                   Grid.Column="1"
+                                   Grid.ColumnSpan="2"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Left"
+                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                   ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                            <TextBlock Grid.Row="1" 
+                                       Grid.Column="1"
+                                       Grid.ColumnSpan="2"
+                                       Text="{x:Bind Description}" 
+                                       TextWrapping="Wrap"
+                                       MaxWidth="300"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Margin="10,10,0,0" />
+                        </ScrollViewer>
+                        
+                        <!-- Related video details - this could be considered its own user control -->
+                        <Grid Grid.Column="0"
+                              Grid.ColumnSpan="3"
+                              Grid.Row="2"
+                              VerticalAlignment="Top"
+                              Margin="0,25,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20px"/>
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Related Videos" />
+                            <ListView Grid.Row="1"
+                                      VerticalAlignment="Top"
+                                      ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                      ScrollViewer.HorizontalScrollMode="Enabled"                  
+                                      ScrollViewer.VerticalScrollMode="Disabled"
+                                      ItemsSource="{Binding RelatedVideos}"
+                                      SelectionMode="None"
+                                      IsItemClickEnabled="False"> <!-- TODO: On click go to the related video in the gallery -->
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Background="Transparent" Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="local:Video">
+                                        <TextBlock Text="{x:Bind Title}" TextWrapping="Wrap"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    </Grid>
                 </DataTemplate>
             </FlipView.ItemTemplate>
         </FlipView>
-    </Grid>
+    </StackPanel>
 </Page>

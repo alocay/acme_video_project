@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace VideoProject
@@ -41,6 +31,7 @@ namespace VideoProject
         {
             base.OnNavigatedTo(e);
 
+            // Get the navigational parameters which will be used for setting up the gallery
             VideoDetailParams videoDetailParams = e.Parameter as VideoDetailParams;
             if (videoDetailParams == null)
             {
@@ -53,6 +44,7 @@ namespace VideoProject
 
         private void ReturnToList_Click(object sender, RoutedEventArgs e)
         {
+            // Navigate back to the main page with the stored list of videos (avoid reloading)
             this.Frame.Navigate(typeof(MainPage), this.ViewModel.Videos);
         }
     }

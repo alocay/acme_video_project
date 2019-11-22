@@ -8,24 +8,48 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <ListView x:Name="videoList"
-                  ItemsSource="{x:Bind ViewModel.Videos.Result}"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  IsItemClickEnabled="True"
-                  ItemClick="VideoList_ItemClick">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:Video">
-                    <TextBlock Text="{x:Bind Title}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Grid>
+    <StackPanel Margin="0,50,0,0">
+        <StackPanel x:Name="errorPanel"
+                    Orientation="Horizontal"
+                    Visibility="{Binding Path=Videos.IsFaulted}"
+                    Margin="25,0,0,0"
+                    HorizontalAlignment="Center">
+            <TextBlock x:Name="errorLabel"
+                       Text="There was an error retrieving the video list"
+                       Foreground="OrangeRed"
+                       FontWeight="SemiBold"
+                       Margin="0,0,15,0"
+                       VerticalAlignment="Center"/>
+            <Button x:Name="retryButton"
+                    Content="Retry" 
+                    Command="{Binding Path=RetreiveVideoDataCommand}"/>
+        </StackPanel>
+        <Grid Margin="0,25,0,0">
+            <StackPanel x:Name="loadingIndicator"
+                        Visibility="{Binding Path=Videos.IsLoading}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Orientation="Vertical"
+                        Width="150px"
+                        Height="150px">
+                <ProgressRing x:Name="loadingRing" IsActive="True"/>
+                <TextBlock x:Name="loadingLabel" 
+                           Text="Loading..." 
+                           HorizontalAlignment="Center"
+                           Margin="0,15,0,0"/>
+            </StackPanel>
+            <ListView x:Name="videoList"
+                      ItemsSource="{Binding Path=Videos.Result}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsItemClickEnabled="True"
+                      ItemClick="VideoList_ItemClick">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Video">
+                        <TextBlock Text="{Binding Path=Title}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </StackPanel>
 </Page>

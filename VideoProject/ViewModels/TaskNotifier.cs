@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 
 namespace VideoProject
@@ -9,7 +8,7 @@ namespace VideoProject
     /// Provides helper function to access to the underlying task's status and exceptions.
     /// </summary>
     /// <typeparam name="TResult">The task return type</typeparam>
-    public class TaskNotifier<TResult> : BindableClass
+    public class TaskNotifier<TResult> : NotifyClass
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TaskNotifier{TResult}"/> class.
@@ -18,6 +17,8 @@ namespace VideoProject
         public TaskNotifier(Task<TResult> task)
         {
             this.Task = task;
+
+            // If not complete, then watch and notify on task changes. Otherwise, there is no need to bother.
             if (!task.IsCompleted)
             {
                 var x = this.WatchTaskAsync(task);
@@ -46,6 +47,14 @@ namespace VideoProject
         public TaskStatus Status
         {
             get { return this.Task.Status; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the task is running
+        /// </summary>
+        public bool IsLoading
+        {
+            get { return !this.Task.IsCompleted; }
         }
 
         /// <summary>
@@ -89,6 +98,7 @@ namespace VideoProject
         {
             try
             {
+                // Wait for the task to complete
                 await task;
             }
             catch
@@ -96,20 +106,25 @@ namespace VideoProject
                 // Exception caught - a faulted and exception property changed event will be notified
             }
 
+            // Notify of these general property changes
             this.NotifyChanged("Status");
             this.NotifyChanged("IsCompleted");
+            this.NotifyChanged("IsLoading");
 
             if (task.IsCanceled)
             {
+                // Task has been cancelled
                 this.NotifyChanged("IsCanceled");
             }
             else if (task.IsFaulted)
             {
+                // There was an error, notify the fault property
                 this.NotifyChanged("IsFaulted");
                 this.NotifyChanged("Exception");
             }
             else
             {
+                // No error or cancelled, notify the result property
                 this.NotifyChanged("Result");
             }
         }

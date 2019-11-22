@@ -5,12 +5,12 @@ namespace VideoProject
     /// <summary>
     /// A class that allow property binding
     /// </summary>
-    public class BindableClass : INotifyPropertyChanged
+    public class NotifyClass : INotifyPropertyChanged
     {
         /// <summary>
         /// The property changed event handler
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
         /// <summary>
         /// Notifies of a property change

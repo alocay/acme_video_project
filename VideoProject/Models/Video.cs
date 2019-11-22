@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace VideoProject
@@ -36,7 +37,7 @@ namespace VideoProject
         /// Gets or sets the running time
         /// </summary>
         [JsonProperty("runningTime")]
-        public float RunningTime { get; set; }
+        public double RunningTime { get; set; }
 
         /// <summary>
         /// Gets or sets the art url
@@ -49,5 +50,28 @@ namespace VideoProject
         /// </summary>
         [JsonProperty("related")]
         public List<string> RelatedVideoIds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the related videos
+        /// </summary>
+        [JsonIgnore]
+        public List<Video> RelatedVideos { get; set; } = new List<Video>();
+
+        /// <summary>
+        /// Gets the related videos based on ID
+        /// </summary>
+        /// <param name="videos">The video list</param>
+        public void SetupRelatedVideos(List<Video> videos)
+        {
+            foreach (string id in this.RelatedVideoIds)
+            {
+                var video = videos.FirstOrDefault(v => v.Id == id);
+
+                if (video != null)
+                {
+                    this.RelatedVideos.Add(video);
+                }
+            }
+        }
     }
 }

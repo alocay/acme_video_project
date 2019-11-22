@@ -1,20 +1,9 @@
-﻿namespace VideoProject
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Runtime.InteropServices.WindowsRuntime;
-    using Windows.Foundation;
-    using Windows.Foundation.Collections;
-    using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Controls.Primitives;
-    using Windows.UI.Xaml.Data;
-    using Windows.UI.Xaml.Input;
-    using Windows.UI.Xaml.Media;
-    using Windows.UI.Xaml.Navigation;
+﻿using System.Collections.Generic;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
+namespace VideoProject
+{
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -36,13 +25,14 @@
         /// <summary>
         /// The navigated to handler. Sets up the view model for the main page.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">Event args</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
+            // Get the navigation parameter - if the video list is not empty, don't bother reloading
             List<Video> videos = e.Parameter as List<Video>;
-            this.ViewModel = new MainPageViewModel(videos);
+            this.DataContext = new MainPageViewModel(videos);
         }
 
         /// <summary>
@@ -53,6 +43,7 @@
         /// <param name="e">The event args</param>
         private void VideoList_ItemClick(object sender, ItemClickEventArgs e)
         {
+            // Get the clicked video and video list and pass it to the gallery page
             var video = e.ClickedItem as Video;
             var haveVideos = this.ViewModel.Videos.IsCompleted && this.ViewModel.Videos.Result != null;
 

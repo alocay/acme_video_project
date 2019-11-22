@@ -119,28 +119,26 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BindableClass.cs" />
+    <Compile Include="ViewModels\Command.cs" />
+    <Compile Include="ViewModels\NotifyClass.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPageViewModel.cs" />
+    <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TaskNotifier.cs" />
-    <Compile Include="Video.cs" />
+    <Compile Include="Converters\RunningTimeDisplayConverter.cs" />
+    <Compile Include="ViewModels\TaskNotifier.cs" />
+    <Compile Include="Models\Video.cs" />
     <Compile Include="VideoDetailParams.cs" />
-    <Compile Include="VideoDetails.xaml.cs">
-      <DependentUpon>VideoDetails.xaml</DependentUpon>
-    </Compile>
     <Compile Include="VideoDetailsGallery.xaml.cs">
       <DependentUpon>VideoDetailsGallery.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VideoDetailsViewModel.cs" />
+    <Compile Include="ViewModels\VideoDetailsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="stylecop.json" />
     <None Include="VideoProject_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -161,10 +159,6 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="VideoDetails.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="VideoDetailsGallery.xaml">
       <SubType>Designer</SubType>
