@@ -21,8 +21,8 @@
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
                   Grid.Row="1"
-                  ItemsSource="{x:Bind ViewModel.Videos}"
-                  SelectedItem="{x:Bind ViewModel.CurrentVideo, Mode=TwoWay}"
+                  ItemsSource="{Binding Videos}"
+                  SelectedItem="{Binding CurrentVideo, Mode=TwoWay}"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Margin="0,100,0,0"
@@ -96,7 +96,8 @@
                                       ScrollViewer.VerticalScrollMode="Disabled"
                                       ItemsSource="{Binding RelatedVideos}"
                                       SelectionMode="None"
-                                      IsItemClickEnabled="False"> <!-- TODO: On click go to the related video in the gallery -->
+                                      IsItemClickEnabled="True"
+                                      ItemClick="ListView_ItemClick">
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Background="Transparent" Orientation="Horizontal" />

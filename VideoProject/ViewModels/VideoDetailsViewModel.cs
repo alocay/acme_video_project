@@ -31,7 +31,19 @@ namespace VideoProject
         /// <summary>
         /// Gets or sets the current video displayed
         /// </summary>
-        public Video CurrentVideo { get; set; }
+        public Video CurrentVideo
+        {
+            get
+            {
+                return this.currentVideo;
+            }
+
+            set
+            {
+                this.currentVideo = value;
+                this.NotifyChanged("CurrentVideo");
+            }
+        }
 
         /// <summary>
         /// Gets the list of videos
